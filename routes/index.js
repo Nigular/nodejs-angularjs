@@ -80,4 +80,15 @@ router.get("/citydata",function(req,res){
 	res.send(ajaxData);		//用send返回数据,json通讯
 });
 
+router.post("/postData",function(req,res){
+	// 接受数据，用了body-parser的第三方控件
+	var user = {username:req.body.username,password:req.body.password};
+	if(user.username=="root" && user.password=="root"){
+		resData = {code:1,msg:"成功"}
+	}else{
+		resData = {code:0,msg:"验证失败"}
+	}
+	res.send(resData);
+});
+
 module.exports = router;
