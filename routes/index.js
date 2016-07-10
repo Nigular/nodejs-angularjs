@@ -5,6 +5,10 @@ router.get("/test",function(req,res){
 	res.render('test', { title: 'test'});
 });
 
+router.get("/home",function(req,res){
+	res.render('home', { title: '主页'});
+});
+
 router.get("/citydata",function(req,res){
 	var ajaxData = {
 		"records": [{

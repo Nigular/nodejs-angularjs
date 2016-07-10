@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title><%= title %></title>
+<link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+<link rel="stylesheet" type="text/css" href="/css/home.css"/>
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="topBox">
+			
+		</div>
+		<div class="bannerBox">
+			<div class="addBox">
+				<input type="text" placeholder="请输入要收藏的网址..."/>
+				<p class="addBtn">添加</p>
+			</div>
+			<div class="confirmBox">
+				<input type="text" class="markName" name="mark" placeholder="请输入名字">
+				<input type="hidden" name="favicon" id="favicon" value="http://www.qiyipic.com/common/images/logo.ico">
+				<!--记录网站小图标-->
+				<select class="type" name="selt_type">
+		      <option value="0">默认书签栏</option>
+        	<option value="技术">技术</option> 
+        	<option value="电影">电影</option>
+        	<option value="mongodb">mongodb</option>
+		   </select>
+				<p class="btn sure">收藏</button>
+				<p class="btn cancle">取消</p>
+			</div>
+		</div>
+		<div class="mainBox">
+			<div class="leftPart">
+				<h3 class="cTit">热门网站</h3>
+				<div class="lineDash"></div>
+				<ul class="list">
+					<li>
+						<a href="https://www.baidu.com/" target="_blank">
+							<img src="/images/home/ban_baidu.jpg"/>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.taobao.com/" target="_blank">
+							<img src="/images/home/ban_taobao.jpg"/>
+						</a>
+					</li>
+				</ul>
+			</div><!-- leftPart End-->
+			<div class="rightPart">
+				<div class="oneType">
+					<h3 class="minTit">默认书签栏</h3>
+					<ul class="markList">
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank" title="百度一下你就知道">百度一下你就知道啦哈哈哈</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+					</ul>
+				</div>
+				<div class="oneType">
+					<h3 class="minTit">技术</h3>
+					<ul class="markList">
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+						<li>
+							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
+							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+							<span class="delBtn"></span>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="addType">
+					新建书签
+				</div>
+			</div><!-- rightpart End-->
+		</div><!-- mainBox End-->
+	</div>
+</body>
+</html>
