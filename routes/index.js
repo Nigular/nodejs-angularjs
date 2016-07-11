@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+// 引入model模块
+var crawler = require("../database/crawler.js");
+
+
 router.get("/test",function(req,res){
 	res.render('test', { title: 'test'});
 });
@@ -87,12 +91,44 @@ router.get("/citydata",function(req,res){
 router.post("/postData",function(req,res){
 	// 接受数据，用了body-parser的第三方控件
 	var user = {username:req.body.username,password:req.body.password};
+	var resData={};
 	if(user.username=="root" && user.password=="root"){
 		resData = {code:1,msg:"成功"}
 	}else{
 		resData = {code:0,msg:"验证失败"}
 	}
 	res.send(resData);
+});
+
+//ajax获取url的title和图标
+router.route("/checkUrl").post(function(req,res){
+	//1.做登陆验证，先跳过
+	
+	var wap = req.body.check_url;	//接收传过来的wap参数
+	crawler.getInfo({wapurl:wap},function(backarr){
+		//返回前必须先把数据组装成json
+		var ajaxTest=backarr;
+		res.send(ajaxTest);	
+	});
+});
+
+// 添加一个网址
+router.post("/addMark",function(req,res){
+	//1.做登陆验证，先跳过
+	
+	var favicon = req.body.favicon==""?"/images/default_wap.jpg":req.body.favicon;
+	var arr={
+		user:"long", //req.session.user.username
+		wap:req.body.wap,
+		mark:req.body.mark,
+		type:req.body.selt_type,
+		icon:favicon
+	}
+	var resData={};
+	wapmodel.add(arr,function(docs){
+		resData = {code:1,msg:"成功"};
+		res.send(resData);
+	});
 });
 
 module.exports = router;
