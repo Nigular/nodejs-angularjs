@@ -19,6 +19,7 @@ var UserSchema = new mongoose.Schema({
     root 	 : {type : Number, default: 1},	// 用户权限。暂定最高权限99。默认1，普通权限
     regtime  : {type : Date, default: Date.now},	//注册时间
     lasttime : {type : Date, default: Date.now},	//最近登陆时间
+    comments :{}
 });
 //将该Schema发布为Model,创建collection连接user表
 var UserModel = db.model('user',UserSchema);

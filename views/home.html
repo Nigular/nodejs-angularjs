@@ -4,13 +4,31 @@
 <meta charset="utf-8">
 <title><%= title %></title>
 <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+<link href='http://fonts.useso.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="/css/usermodal.css"/>
 <link rel="stylesheet" type="text/css" href="/css/home.css"/>
 <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script src="/javascripts/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/modernizr.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body>
-	<div class="container" ng-app="myapp" ng-controller="myctrl">
+<body ng-app="myapp" ng-controller="myctrl">
+	<div class="container">
 		<div class="topBox">
-			
+			<% if(username==""){ %>
+			<nav class="main-nav">
+				<ul>
+					<li><a class="cd-signin" href="javascript:;">登 录</a></li>
+					<li><a class="cd-signup" href="javascript:;">注 册</a></li>
+				</ul>
+			</nav>
+			<% }else{ %>
+				<nav class="login-nav">
+					<ul>
+						<li>用户：<%= username %></li>
+						<li><a class="cd-signin" href="javascript:;" ng-click="loginout()">退出登录</a></li>
+					</ul>
+				</nav>
+			<% } %>
 		</div>
 		<div class="bannerBox">
 			<div class="addBox">
@@ -116,8 +134,110 @@
 			</div><!-- rightpart End-->
 		</div><!-- mainBox End-->
 	</div>
+	
+	<!--新建书签窗口-->
+	<div class="type-modal">
+		<div class="box">
+			<h3>新建书签</h3>
+			<input type="text" />
+			<p>添加书签</p>
+			<p class="cancle">取消</p>
+		</div>
+	</div>
+	
+	
+	<!--注册登录窗口-->
+	<div class="cd-user-modal"> <!-- this is the entire modal form, including the background -->
+		<div class="cd-user-modal-container"> <!-- this is the container wrapper -->
+			<ul class="cd-switcher">
+				<li><a href="#0">用户登录</a></li>
+				<li><a href="#0">新用户注册</a></li>
+			</ul>
+
+			<div id="cd-login"> <!-- log in form -->
+				<div class="cd-form">
+					<p class="fieldset">
+						<label class="image-replace cd-email" for="signin-email">邮箱</label>
+						<input class="full-width has-padding has-border" id="signin-email" type="email" ng-model="signinEmai" placeholder="E-mail">
+						<span class="cd-error-message">Error message here!</span>
+					</p>
+
+					<p class="fieldset">
+						<label class="image-replace cd-password" for="signin-password">密码</label>
+						<input class="full-width has-padding has-border" id="signin-password" type="text" ng-model="signinPassword"  placeholder="Password">
+						<a href="#0" class="hide-password">Hide</a>
+						<span class="cd-error-message">Error message here!</span>
+					</p>
+
+					<!--<p class="fieldset">
+						<input type="checkbox" id="remember-me" checked>
+						<label for="remember-me">Remember me</label>
+					</p>-->
+
+					<p class="fieldset">
+						<input class="full-width" type="submit" value="登 录" ng-click="login()">
+					</p>
+				</div>
+				
+				<!--<p class="cd-form-bottom-message"><a href="#0">Forgot your password?</a></p>-->
+				<!-- <a href="#0" class="cd-close-form">Close</a> -->
+			</div> <!-- cd-login -->
+
+			<div id="cd-signup"> <!-- sign up form -->
+				<div class="cd-form">
+					<p class="fieldset">
+						<label class="image-replace cd-username" for="signup-username">用户名</label>
+						<input class="full-width has-padding has-border" id="signup-username" type="text" ng-model="signupUsername" placeholder="Username">
+						<span class="cd-error-message">Error message here!</span>
+					</p>
+
+					<p class="fieldset">
+						<label class="image-replace cd-email" for="signup-email">邮箱</label>
+						<input class="full-width has-padding has-border" id="signup-email" type="email" ng-model="signupEmail" placeholder="E-mail">
+						<span class="cd-error-message">Error message here!</span>
+					</p>
+
+					<p class="fieldset">
+						<label class="image-replace cd-password" for="signup-password">密码</label>
+						<input class="full-width has-padding has-border" id="signup-password" type="text" ng-model="signupPassword"  placeholder="Password">
+						<a href="#0" class="hide-password">Hide</a>
+						<span class="cd-error-message">Error message here!</span>
+					</p>
+					<!--<p class="fieldset">
+						<input type="checkbox" id="accept-terms">
+						<label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
+					</p>-->
+					<p class="fieldset">
+						<input class="full-width has-padding" type="submit" value="注 册" ng-click="reg()">
+					</p>
+				</div>
+
+				<!-- <a href="#0" class="cd-close-form">Close</a> -->
+			</div> <!-- cd-signup -->
+
+			<div id="cd-reset-password"> <!-- reset password form -->
+				<p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
+
+				<form class="cd-form">
+					<p class="fieldset">
+						<label class="image-replace cd-email" for="reset-email">E-mail</label>
+						<input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
+						<span class="cd-error-message">Error message here!</span>
+					</p>
+
+					<p class="fieldset">
+						<input class="full-width has-padding" type="submit" value="Reset password">
+					</p>
+				</form>
+
+				<p class="cd-form-bottom-message"><a href="#0">Back to log-in</a></p>
+			</div> <!-- cd-reset-password -->
+			<a href="#0" class="cd-close-form">Close</a>
+		</div> <!-- cd-user-modal-container -->
+	</div> <!-- cd-user-modal -->
 </body>
 </html>
+<script src="/javascripts/usermodal.js"></script> 
 <script type="text/javascript">
 	var app = angular.module("myapp",[]);
 	app.controller("myctrl",function($scope,$http){
@@ -125,15 +245,19 @@
 		$scope.check=function(){
 			$http.post('/checkUrl',{check_url:$scope.addLink})
 			.success(function(data){
-			    $scope.markName=data.title;
-			    $scope.favicon=data.icon;
+				if(data.code==0){
+					alert("你还没登录");
+				}else{
+					$scope.markName=data.title;
+			   	 	$scope.favicon=data.icon;
+				}
 			});
 		}
 		
 		$scope.addOne = function(){
 			$http.post('/addMark',{
 				favicon:$scope.favicon,
-				wap:$scope.addLink
+				wap:$scope.addLink,
 				mark:$scope.markName,
 				selt_type:$scope.seltType
 			})
@@ -144,5 +268,40 @@
 			});
 		}
 		
+		$scope.login = function(){
+			$http.post('/login',{
+				email:$scope.signinEmai,
+				password:$scope.signinPassword
+			})
+			.success(function(data){
+				if(data.code==1){
+					alert("登录成功");
+			    	window.location.reload();
+				}else{
+					alert("登录失败，用户名或密码错误");
+				}
+			});
+		}
+		
+		$scope.loginout = function(){
+			$http.get("/loginout").success(function(){
+				alert("退出成功");
+				window.location.reload();
+			});
+		}
+		
+		$scope.reg = function(){
+			$http.post('/register',{
+				username:$scope.signupUsername,
+				email:$scope.signupEmail,
+				password:$scope.signupPassword
+			})
+			.success(function(data){
+			    alert("注册成功");
+			    window.location.reload();
+			});
+		}
+		
 	});
+	
 </script>
