@@ -35,15 +35,12 @@
 				<input type="text" placeholder="请输入要收藏的网址..." ng-model="addLink"/>
 				<p class="addBtn" ng-click="check()">添加</p>
 			</div>
-			<div class="confirmBox">
+			<div class="confirmBox" ng-show="stepShow" ng-cloak>
 				<input type="text" class="markName" name="mark" placeholder="请输入名字" ng-model="markName">
 				<input type="hidden" name="favicon" value="" ng-model="favicon">
 				<!--记录网站小图标-->
-				<select class="type" name="selt_type" ng-model="seltType">
-				    <option value="0">默认书签栏</option>
-		        	<option value="技术">技术</option> 
-		        	<option value="电影">电影</option>
-		        	<option value="mongodb">mongodb</option>
+				<select class="type" name="selt_type" ng-model="seltType" ng-options="a.name for a in initData.types">
+				    <option value="">默认书签栏</option>
 				</select>
 				<p class="btn sure" ng-click="addOne()">收藏</button>
 				<p class="btn cancle">取消</p>
@@ -128,7 +125,7 @@
 					</ul>
 				</div>
 				
-				<div class="addType">
+				<div class="addType" ng-click="showT()">
 					新建书签
 				</div>
 			</div><!-- rightpart End-->
@@ -136,12 +133,12 @@
 	</div>
 	
 	<!--新建书签窗口-->
-	<div class="type-modal">
+	<div class="type-modal" ng-show="typeShow" ng-cloak>
 		<div class="box">
 			<h3>新建书签</h3>
-			<input type="text" />
-			<p>添加书签</p>
-			<p class="cancle">取消</p>
+			<input type="text" ng-model="newType"/>
+			<p ng-click="addT()">添加书签</p>
+			<p class="cancle" ng-click="showT()">取消</p>
 		</div>
 	</div>
 	
@@ -238,70 +235,4 @@
 </body>
 </html>
 <script src="/javascripts/usermodal.js"></script> 
-<script type="text/javascript">
-	var app = angular.module("myapp",[]);
-	app.controller("myctrl",function($scope,$http){
-		
-		$scope.check=function(){
-			$http.post('/checkUrl',{check_url:$scope.addLink})
-			.success(function(data){
-				if(data.code==0){
-					alert("你还没登录");
-				}else{
-					$scope.markName=data.title;
-			   	 	$scope.favicon=data.icon;
-				}
-			});
-		}
-		
-		$scope.addOne = function(){
-			$http.post('/addMark',{
-				favicon:$scope.favicon,
-				wap:$scope.addLink,
-				mark:$scope.markName,
-				selt_type:$scope.seltType
-			})
-			.success(function(data){
-			    if(data.code==1){
-			    	alert("添加成功");
-			    }
-			});
-		}
-		
-		$scope.login = function(){
-			$http.post('/login',{
-				email:$scope.signinEmai,
-				password:$scope.signinPassword
-			})
-			.success(function(data){
-				if(data.code==1){
-					alert("登录成功");
-			    	window.location.reload();
-				}else{
-					alert("登录失败，用户名或密码错误");
-				}
-			});
-		}
-		
-		$scope.loginout = function(){
-			$http.get("/loginout").success(function(){
-				alert("退出成功");
-				window.location.reload();
-			});
-		}
-		
-		$scope.reg = function(){
-			$http.post('/register',{
-				username:$scope.signupUsername,
-				email:$scope.signupEmail,
-				password:$scope.signupPassword
-			})
-			.success(function(data){
-			    alert("注册成功");
-			    window.location.reload();
-			});
-		}
-		
-	});
-	
-</script>
+<script src="/javascripts/home.js" type="text/javascript" charset="utf-8"></script>

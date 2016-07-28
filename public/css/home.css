@@ -40,7 +40,7 @@ body {
 }
 .type-modal .box{
 	width: 300px;
-	height: 180px;
+	height: 215px;
 	background: #FFFFFF;
 	position: absolute;
 	top: 30%;
@@ -61,6 +61,7 @@ body {
     padding: 0 10px;
     height: 40px;
     outline: none;
+    margin-bottom: 24px;
 }
 .type-modal .box p{
     width: 200px;
@@ -70,8 +71,9 @@ body {
     line-height: 36px;
     text-align: center;
     margin: 10px auto;
-    margin-top: 20px;
+    margin-top: 10px;
     border-radius: 3px;
+    cursor: pointer;
 }
 
 .bannerBox {

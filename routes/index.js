@@ -75,16 +75,56 @@ router.post("/addMark",function(req,res){
 	//1.做登陆验证，先跳过
 	
 	var favicon = req.body.favicon==""?"/images/default_wap.jpg":req.body.favicon;
-	var arr={
-		user:"long", //req.session.user.username
+	var condition={
+		email:req.session.user.email,
+		type:req.body.selt_type
+	}
+	var option={
 		wap:req.body.wap,
 		mark:req.body.mark,
-		type:req.body.selt_type,
 		icon:favicon
 	}
 	var resData={};
-	wapmodel.add(arr,function(docs){
+	mainmodel.addMark(condition,option,function(docs){
 		resData = {code:1,msg:"成功"};
+		res.send(resData);
+	});
+});
+
+// 新建一个标签
+router.post("/addNewType",function(req,res){
+	//1.做登陆验证，先跳过
+	var condition={
+		email:req.session.user.email
+	};
+	var arr={
+		name:req.body.name
+	};
+	var resData={};
+	mainmodel.addNewType(condition,arr,function(docs){
+		if(docs.nModified==1){
+			resData = {code:1,msg:"添加成功"};
+			res.send(resData);
+		}else{
+			resData = {code:0,msg:"添加失败"};
+			res.send(resData);
+		}
+	});
+});
+
+// 查询所有分类
+router.post("/findall",function(req,res){
+	var option={
+		email:req.session.user.email
+	};
+	mainmodel.findAll(option,function(docs){
+		var resData={};
+		//console.log(docs.code);
+		if(docs.code==0){
+			resData={code:0,msg:docs.err};
+		}else{
+			resData = {code:1,data:docs};
+		}
 		res.send(resData);
 	});
 });

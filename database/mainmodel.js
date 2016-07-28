@@ -12,6 +12,19 @@ Entity  ：  由Model创建的实体，他的操作也会影响数据库
 */
 
 //定义一个User表的骨架Schema
+var wapSchema = new mongoose.Schema({
+    wap   : {type : String},	//网址
+    mark  : {type : String},	//标记
+    icon  : {type : String},	//网站logo
+    insertTime : {type : Date, default: Date.now}
+});
+
+var typeSchema = new mongoose.Schema({
+	name : {type : String},
+	waps:[wapSchema],			// 分类下的子文档网址
+	insertTime:{type : Date, default: Date.now}
+});
+
 var MainSchema = new mongoose.Schema({
     username : {type : String, default : '匿名用户'},	//用户名
     email: {type:String}, //邮箱
@@ -20,11 +33,13 @@ var MainSchema = new mongoose.Schema({
     root 	 : {type : Number, default: 1},	// 用户权限。暂定最高权限99。默认1，普通权限
     regtime  : {type : String, default: parseInt(new Date().getTime())},	//注册时间
     lasttime : {type : String, default: parseInt(new Date().getTime())},	//最近登陆时间
-    comments : {}		// 该用户收藏的网址集合
+    types : [typeSchema]			// 用户下的子文档分类
 });
 
 //将该Schema发布为Model,创建collection连接user表
 var MainModel = db.model('main',MainSchema);
+var TypeModel = db.model('types',typeSchema);
+var wapModel = db.model('waps',wapSchema);
 
 // 插入一个新用户
 exports.adduser = function(option,callback) {
@@ -49,16 +64,49 @@ exports.checkuser = function(option,callback) {
 	});
 }
 
+// 插入一条网址
+exports.addMark = function(condition,option,callback) {
+    MainModel.findOne({"email":condition.email},function (err, docs) {
+	    	for(var t in docs.types){
+	    		if(docs.types[t].name==condition.type){		//循环对比找出tpye的id
+	    			console.log(docs.types[t].id);
+	    			//findByIdAndUpdate
+	    			TypeModel.findById(docs.types[t].id,function(err, item){
+	    				 if (err){
+								return console.error(err);
+					      }else{
+					            console.log(item);
+					      }
+	    			});
+	    		}
+	    	}
+    });
+}
+
+
 // 插入一个分类
-exports.addtype = function(condition,option,callback) {
-   MainModel.update(condition,option, function (err, docs) {
+// condition查询条件
+exports.addNewType = function(condition,option,callback) {
+	//‘$set’ 指定一个键的值,这个键不存在就创建它.可以是任何MondoDB支持的类型.
+	//'$push' 新增数组
+   MainModel.update(condition,{'$push':{'types':option}}, function (err, docs) {
 		if (err){
 			return console.error(err);
-        }else{
-        	console.log(docs);
+      }else{
             callback(docs);
         }
-    });
+   });
+}
+
+exports.findAll = function(option,callback) {
+	MainModel.findOne(option,function(err,person){
+		 //如果err==null，则person就能取到数据
+		 	if (err){
+				callback({code:0,err:err});
+	      }else{
+	            callback(person);
+	        }
+	});
 }
 
 exports.mainmodel = MainModel;// 作为一个模块被引用，要用exports把变量暴露出去
