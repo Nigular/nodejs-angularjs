@@ -10,7 +10,8 @@ router.post("/register",function(req,res){
 	var addData={
 		username:req.body.username,
 	    email: req.body.email,
-	    password : req.body.password
+	    password : req.body.password,
+	    types:{name:"默认书签栏"}
 	}
 	mainmodel.adduser(addData,function(data){
 		//console.log(data);
@@ -85,9 +86,8 @@ router.post("/addMark",function(req,res){
 		icon:favicon
 	}
 	var resData={};
-	mainmodel.addMark(condition,option,function(docs){
-		resData = {code:1,msg:"成功"};
-		res.send(resData);
+	mainmodel.addMark(condition,option,function(backarr){
+		res.send(backarr);
 	});
 });
 

@@ -46,6 +46,7 @@ var app = angular.module("myapp",[]);
 			})
 			.success(function(data){
 				$scope.stepShow=false;
+				$scope.addLink="";
 			    if(data.code==1){
 			    	alert("添加成功");
 			    }else{

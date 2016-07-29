@@ -13,6 +13,7 @@ Entity  ：  由Model创建的实体，他的操作也会影响数据库
 
 //定义一个User表的骨架Schema
 var wapSchema = new mongoose.Schema({
+	type_id:{type : String},	// 对应唯一分类的ID
     wap   : {type : String},	//网址
     mark  : {type : String},	//标记
     icon  : {type : String},	//网站logo
@@ -21,7 +22,7 @@ var wapSchema = new mongoose.Schema({
 
 var typeSchema = new mongoose.Schema({
 	name : {type : String},
-	waps:[wapSchema],			// 分类下的子文档网址
+	waps:[],
 	insertTime:{type : Date, default: Date.now}
 });
 
@@ -38,7 +39,6 @@ var MainSchema = new mongoose.Schema({
 
 //将该Schema发布为Model,创建collection连接user表
 var MainModel = db.model('main',MainSchema);
-var TypeModel = db.model('types',typeSchema);
 var wapModel = db.model('waps',wapSchema);
 
 // 插入一个新用户
@@ -67,19 +67,22 @@ exports.checkuser = function(option,callback) {
 // 插入一条网址
 exports.addMark = function(condition,option,callback) {
     MainModel.findOne({"email":condition.email},function (err, docs) {
+    		var ind;
 	    	for(var t in docs.types){
 	    		if(docs.types[t].name==condition.type){		//循环对比找出tpye的id
-	    			console.log(docs.types[t].id);
-	    			//findByIdAndUpdate
-	    			TypeModel.findById(docs.types[t].id,function(err, item){
-	    				 if (err){
-								return console.error(err);
-					      }else{
-					            console.log(item);
-					      }
-	    			});
+					ind=docs.types[t].id;
+					console.log(ind);
 	    		}
 	    	}
+	    	option.type_id=ind;
+	    	 wapModel.create(option, function (err, item) {
+				if (err){
+					callback({code:0});
+					return console.error(err);
+		      	}else{
+		            callback({code:1});
+		        }
+		   });
     });
 }
 
@@ -92,19 +95,27 @@ exports.addNewType = function(condition,option,callback) {
    MainModel.update(condition,{'$push':{'types':option}}, function (err, docs) {
 		if (err){
 			return console.error(err);
-      }else{
+      	}else{
             callback(docs);
         }
    });
 }
 
 exports.findAll = function(option,callback) {
-	MainModel.findOne(option,function(err,person){
+	MainModel.findOne(option,function(err,data){
 		 //如果err==null，则person就能取到数据
 		 	if (err){
 				callback({code:0,err:err});
-	      }else{
-	            callback(person);
+	      	}else{
+	      		var mydatas = data;
+	      		for(var i in data.types){
+	      			var _id = data.types[i].id;
+	      			wapModel.find({"type_id":_id},function(err,_waps){
+	      				data.types[i].waps=_waps;
+	      				
+	      			});
+	      		}
+	      		callback(data);
 	        }
 	});
 }
