@@ -40,10 +40,10 @@
 				<input type="hidden" name="favicon" value="" ng-model="favicon">
 				<!--记录网站小图标-->
 				<select class="type" name="selt_type" ng-model="seltType" ng-options="a.name for a in initData.types">
-				    <option value="">默认书签栏</option>
+				   
 				</select>
 				<p class="btn sure" ng-click="addOne()">收藏</button>
-				<p class="btn cancle">取消</p>
+				<p class="btn cancle" ng-click="cancleT()">取消</p>
 			</div>
 		</div>
 		<div class="mainBox">
@@ -64,37 +64,17 @@
 				</ul>
 			</div><!-- leftPart End-->
 			<div class="rightPart">
-				<div class="oneType">
-					<h3 class="minTit">默认书签栏</h3>
+				<div class="oneType" ng-repeat="items in initData.types">
+					<h3 class="minTit"  ng-cloak>{{items.name}}</h3>
 					<ul class="markList">
-						<li>
-							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
-							<a href="http://www.iqiyi.com/" class="link" target="_blank" title="百度一下你就知道">百度一下你就知道啦哈哈哈</a>
-							<span class="delBtn"></span>
-						</li>
-						<li>
-							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
-							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
-							<span class="delBtn"></span>
-						</li>
-						<li>
-							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
-							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
-							<span class="delBtn"></span>
-						</li>
-						<li>
-							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
-							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
-							<span class="delBtn"></span>
-						</li>
-						<li>
-							<img class="linkIcon" src="/images/default_wap.jpg" onerror="this.src='/images/default_wap.jpg'">
-							<a href="http://www.iqiyi.com/" class="link" target="_blank">爱奇艺</a>
+						<li ng-repeat="item in items.waps">
+							<img class="linkIcon" src="{{item.icon}}"  ng-cloak/>
+							<a href="{{item.wap}}" class="link" target="_blank" title="{{item.mark}}" ng-cloak>{{item.mark}}</a>
 							<span class="delBtn"></span>
 						</li>
 					</ul>
 				</div>
-				<div class="oneType">
+				<!--<div class="oneType">
 					<h3 class="minTit">技术</h3>
 					<ul class="markList">
 						<li>
@@ -123,7 +103,7 @@
 							<span class="delBtn"></span>
 						</li>
 					</ul>
-				</div>
+				</div>-->
 				
 				<div class="addType" ng-click="showT()">
 					新建书签

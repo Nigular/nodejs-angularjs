@@ -71,7 +71,7 @@ exports.addMark = function(condition,option,callback) {
 	    	for(var t in docs.types){
 	    		if(docs.types[t].name==condition.type){		//循环对比找出tpye的id
 					ind=docs.types[t].id;
-					console.log(ind);
+					//console.log(ind);
 	    		}
 	    	}
 	    	option.type_id=ind;
@@ -106,17 +106,20 @@ exports.findAll = function(option,callback) {
 		 //如果err==null，则person就能取到数据
 		 	if (err){
 				callback({code:0,err:err});
-	      	}else{
-	      		var mydatas = data;
-	      		for(var i in data.types){
-	      			var _id = data.types[i].id;
-	      			wapModel.find({"type_id":_id},function(err,_waps){
-	      				data.types[i].waps=_waps;
-	      				
-	      			});
-	      		}
+	     }else{
 	      		callback(data);
 	        }
+	});
+}
+
+// 查询一个分类下的记录
+exports.getOneType=function(option,callback){
+	wapModel.find(option,function(err,data){
+		  if (err){
+				callback({code:0,err:err});
+	      }else{
+	      		callback(data);
+	      }
 	});
 }
 

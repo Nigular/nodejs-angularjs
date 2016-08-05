@@ -129,4 +129,19 @@ router.post("/findall",function(req,res){
 	});
 });
 
+// 查询单个分类的数据
+router.post("/getTypeData",function(req,res){
+	var option={
+		type_id:req.body.id
+	};
+	mainmodel.getOneType(option,function(docs){
+		if(docs.code==0){
+			resData={code:0,msg:docs.err};
+		}else{
+			resData = {code:1,data:docs};
+		}
+		res.send(resData);
+	});
+})
+
 module.exports = router;

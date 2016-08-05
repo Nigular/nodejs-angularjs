@@ -1,3 +1,4 @@
+
 function isURL(str_url){
 			if (str_url==''){
 				alert('URL 地址不能为空');
@@ -23,7 +24,7 @@ var app = angular.module("myapp",[]);
 		$scope.initData={};	// 个人数据
 		
 		$scope.check=function(){
-			console.log($scope.addLink);
+			//console.log($scope.addLink);
 			if(!isURL($scope.addLink)) return false;
 			$http.post('/checkUrl',{check_url:$scope.addLink})
 			.success(function(data){
@@ -38,6 +39,10 @@ var app = angular.module("myapp",[]);
 		}
 		
 		$scope.addOne = function(){
+			if($scope.markName==""){
+				alert("请填写名称");
+				return false;
+			}
 			$http.post('/addMark',{
 				favicon:$scope.favicon,
 				wap:$scope.addLink,
@@ -49,6 +54,7 @@ var app = angular.module("myapp",[]);
 				$scope.addLink="";
 			    if(data.code==1){
 			    	alert("添加成功");
+			    	window.location.reload();
 			    }else{
 			    	alert("系统错误,请稍后重试");
 			    }
@@ -93,6 +99,13 @@ var app = angular.module("myapp",[]);
 			$scope.typeShow=!$scope.typeShow;
 		}
 		
+		$scope.cancleT=function(){
+			$scope.stepShow=false;
+			$scope.markName="";
+			$scope.favicon="";
+			$scope.addLink="";
+		}
+		
 		// 新建一个分类
 		$scope.addT=function(){
 			if($scope.newType==""){
@@ -105,9 +118,11 @@ var app = angular.module("myapp",[]);
 					if(data.code==1){
 						 alert("添加成功");
 						 $scope.typeShow=false;
+						 window.location.reload();
 					}else{
-						alert("添加失败");
+						alert("添加失败,请稍后重试");
 						$scope.typeShow=false;
+						window.location.reload();
 					}
 				});
 			}
@@ -119,6 +134,19 @@ var app = angular.module("myapp",[]);
 			.success(function(data){
 				if(data.code==1){
 					$scope.initData=data.data;
+					$scope.seltType = $scope.initData.types[0];
+					for(let j in data.data.types){			//es6 var 改成let ,把异步强制换成同步，一个高手指点的
+						var tid = data.data.types[j]._id;
+						$http.post('/getTypeData',{id:tid})
+						.success(function(data){
+							if(data.code==1){
+								//console.log(j)
+								$scope.initData.types[j].waps=data.data;
+							}else{
+								alert(data.msg);
+							}
+						})
+					}
 				}else{
 					alert(data.msg);
 				};
